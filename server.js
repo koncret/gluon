@@ -332,3 +332,46 @@ function scheduleFortuneTweet() {
 schedulePersonalityTweet();
 scheduleFortuneTweet();
 console.log("Tweet schedules have been set up.");
+
+// Function to check for recent mentions and occasionally reply
+async function checkForMentionsAndReplies() {
+  try {
+    // Fetch the 10 most recent mentions and replies to Gluon
+    const mentions = await twitterClient.v2.userMentionTimeline(process.env.GLUON_USER_ID, { max_results: 10 });
+
+    // Loop through mentions
+    for (const mention of mentions.data) {
+      // 30% chance for Gluon to respond
+      const shouldReply = Math.random() < 0.3;
+      
+      if (shouldReply) {
+        const userName = mention.author_id; // Twitter user who mentioned Gluon
+        const replyPrompt = `Generate an extremely original, sharp-witted tweet in Gluon's tone. Avoid clichés, tired jokes, or anything that feels overdone, and don't start the tweet with 'Ah,' or 'Oh,' just dive right into the content. The tweet should feel fresh, funny, maybe a little bit like existential crisis, can also be self deprecating but not always, capturing modern internet humor with brainrot phrasing. You can also use curse words if it makes sense to. It must be one sentence, with no more than 100 characters. No hashtags or emojis.. Respond to this text: "${mention.text}"`;
+
+        // Generate reply content
+        const response = await openai.chat.completions.create({
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "system", content: personalityPrompt },
+            { role: "user", content: replyPrompt }
+          ],
+        });
+
+        const replyContent = response.choices[0].message.content;
+
+        // Post the reply
+        try {
+          await twitterClient.v2.reply(replyContent, mention.id);
+          console.log(`Replied to ${userName}: ${replyContent}`);
+        } catch (error) {
+          console.error("Error posting reply:", error);
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching mentions or generating reply:", error);
+  }
+}
+
+// Set up a recurring check for mentions every hour
+setInterval(checkForMentionsAndReplies, 60 * 60 * 1000); // 1 hour in milliseconds
