@@ -10,6 +10,11 @@ const app = express();
 app.use(express.json());
 app.use(express.static(__dirname));
 
+const port = process.env.PORT || 10000;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`)
+})
+
 // Initialize OpenAI API
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -153,11 +158,6 @@ app.post('/api/chat', async (req, res) => {
         console.error("Error generating conversation response:", error);
         return res.json({ reply: "I'm here to chat about whatever's on your mind. What's up?" });
     }
-});
-
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
 });
 
 /**************************************************************************
