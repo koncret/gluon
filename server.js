@@ -375,3 +375,11 @@ async function checkForMentionsAndReplies() {
 
 // Set up a recurring check for mentions every hour
 setInterval(checkForMentionsAndReplies, 60 * 60 * 1000); // 1 hour in milliseconds
+
+// Function to log a custom note to the terminal every 10 minutes
+function logPeriodicNote() {
+  console.log("Note: Gluon is monitoring tweets and mentions...");
+}
+
+// Set up a recurring log every 10 minutes (600,000 milliseconds)
+setInterval(logPeriodicNote, 5 * 60 * 1000); // 10 minutes
