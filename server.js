@@ -192,21 +192,23 @@ const twitterClient = new TwitterApi({
 
 console.log("Bot initialized and starting...");
 
-// Directory where images are stored and starting image index
-const imageDir = path.join(__dirname, 'imgs');
+// Base URL where images are hosted and starting image index
+const imageBaseUrl = 'https://g1u0n10.github.io/Gluon-Images/imgs';
 let currentImageIndex = 1;
 
-// Function to get the next image path in sequence
+// Function to get the next image URL in sequence
 function getNextImagePath() {
-  const imagePath = path.join(imageDir, `${currentImageIndex}.jpg`);
-  if (!fs.existsSync(imagePath)) {
-    console.log(`Image ${currentImageIndex}.jpg not found, resetting to 1.jpg.`);
-    currentImageIndex = 1;
-    return path.join(imageDir, `${currentImageIndex}.jpg`);
-  }
+  const imageUrl = `${imageBaseUrl}/${currentImageIndex}.jpg`;
+
+  // Log the URL for debugging
+  console.log(`Fetching image: ${imageUrl}`);
+
+  // Increment index to use the next image in the sequence
   currentImageIndex += 1;
-  return imagePath;
+
+  return imageUrl;
 }
+
 
 // Personality prompt and base tweet prompt
 const personalityPrompt = process.env.XBOT_SYSTEM_MESSAGE_CONTENT
@@ -278,6 +280,8 @@ async function generatePersonalityTweet() {
   }
 }
 
+/*
+
 // Function to post a personality tweet every 2 hours at a random time within that interval
 function schedulePersonalityTweet() {
   const minInterval = 0;
@@ -326,6 +330,49 @@ function scheduleFortuneTweet() {
     scheduleFortuneTweet(); // Schedule the next fortune tweet
   }, randomInterval);
 }
+
+
+*/
+
+
+
+// Function to post a personality tweet every 10 seconds for testing
+function schedulePersonalityTweet() {
+  const randomInterval = 100000 * 1000; // 10 seconds for personality tweets
+
+  console.log(`Scheduling personality tweet in ${(randomInterval / 1000).toFixed(2)} seconds.`);
+  
+  setTimeout(async () => {
+    const tweetContent = await generatePersonalityTweet();
+    if (tweetContent) {
+      // Log the personality tweet content to the console instead of tweeting
+      console.log("Generated personality tweet:", tweetContent);
+    }
+    schedulePersonalityTweet(); // Schedule the next personality tweet
+  }, randomInterval);
+}
+
+// Function to post a fortune tweet every 30 seconds for testing
+function scheduleFortuneTweet() {
+  const randomInterval = 2 * 1000; // 10 seconds for personality tweets
+
+  console.log(`Scheduling fortune tweet in ${(randomInterval / 1000).toFixed(2)} seconds.`);
+  
+  setTimeout(async () => {
+    const tweetContent = await generateUniqueQuarkTweet();
+    if (tweetContent) {
+      const imagePath = getNextImagePath();
+      
+      // Log the fortune tweet content and image path to the console instead of tweeting
+      console.log("Generated fortune tweet with image:", tweetContent);
+      console.log("Image path:", imagePath);
+    }
+    scheduleFortuneTweet(); // Schedule the next fortune tweet
+  }, randomInterval);
+}
+
+
+
 
 
 // Start the tweet schedules
