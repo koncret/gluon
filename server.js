@@ -213,7 +213,7 @@ const personalityPrompt = process.env.XBOT_SYSTEM_MESSAGE_CONTENT
 
 // Function to generate the quark-specific prompt
 function quarkPromptTemplate(quarkName) {
-  return process.env.TWEET_PROMPT.replace("${quarkName}", quarkName);
+  return process.env.XBOT_PROMPT.replace("${quarkName}", quarkName);
 }
 
 // Array of all Quarks
@@ -249,10 +249,8 @@ async function generateUniqueQuarkTweet() {
     });
 
     let tweetContent = response.choices[0].message.content;
-    const quarkPattern = new RegExp(`^\\s*Quark\\s+${selectedQuark}\\s*[:,]?\\s*`, 'i');
-    tweetContent = tweetContent.replace(quarkPattern, '').trim();
 
-    console.log(`Generated fortune tweet content for ${selectedQuark}: ${tweetContent}`);
+    // console.log(`Generated fortune tweet content for ${selectedQuark}: ${tweetContent}`);
     return `${selectedQuark}: ${tweetContent}`;
   } catch (error) {
     console.error("Error generating tweet:", error);
@@ -262,7 +260,7 @@ async function generateUniqueQuarkTweet() {
 
 // Function to generate a personality-based tweet without an image
 async function generatePersonalityTweet() {
-  const generalPrompt = `Generate a tweet in Gluon's tone. It should be an observation, open-ended question, or insightful thought, within 280 characters. Avoid using Quark-specific terms.`;
+  const generalPrompt = process.env.XBOT_PROMPT_GENERAL
 
   try {
     const response = await openai.chat.completions.create({
@@ -272,7 +270,7 @@ async function generatePersonalityTweet() {
         { role: "user", content: generalPrompt }
       ],
     });
-    console.log(`Generated personality tweet: ${response.choices[0].message.content.trim()}`);
+    // console.log(`Generated personality tweet: ${response.choices[0].message.content.trim()}`);
     return response.choices[0].message.content.trim();
   } catch (error) {
     console.error("Error generating personality tweet:", error);
@@ -328,6 +326,7 @@ function scheduleFortuneTweet() {
     scheduleFortuneTweet(); // Schedule the next fortune tweet
   }, randomInterval);
 }
+
 
 // Start the tweet schedules
 schedulePersonalityTweet();
