@@ -129,6 +129,7 @@
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
             background-color: #1f1333;
             border: 3px solid #ac73ff;
+            box-sizing: border-box;
         }
         
         #chat-container {
@@ -152,7 +153,7 @@
         
         #about-popup.adjust-minimize,
         #chat-container.adjust-minimize {
-            height: 44px;
+            height: 46px;
         }
         
         #chat-container {
@@ -228,24 +229,19 @@
             #chat-container {
                 width: 400px;
                 max-width: 90%;
-                max-height: 500px;
             }
             #about-popup {
                 width: 300px;
                 max-width: 90%;
-                max-height: 400px;
             }
             #about-popup.adjust-maximize,
             #chat-container.adjust-maximize {
+                max-width: 100%;
                 width: calc(100% - 20px);
-                height: calc(100% - 20px);
+                height: calc(100% - 100px);
                 top: 0 !important;
                 left: 0 !important;
-                margin: 10px;
-            }
-            #about-popup.adjust-minimize,
-            #chat-container.adjust-minimize {
-                height: 44px;
+                margin: 60px 10px 10px 10px;
             }
         }
     </style>
