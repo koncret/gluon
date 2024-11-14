@@ -302,8 +302,8 @@ function schedulePersonalityTweet() {
 
 // Function to post a fortune tweet every 4-8 hours at a random time within that interval
 function scheduleFortuneTweet() {
-  const minInterval = 4 * 60 * 60 * 1000;
-  const maxInterval = 8 * 60 * 60 * 1000;
+  const minInterval = 2 * 60 * 60 * 1000;
+  const maxInterval = 5 * 60 * 60 * 1000;
   const randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
 
   console.log(`Scheduling fortune tweet in ${(randomInterval / (60 * 60 * 1000)).toFixed(2)} hours.`);
