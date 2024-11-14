@@ -386,7 +386,7 @@ async function checkForMentionsAndReplies() {
       
       if (shouldReply) {
         const userName = mention.author_id; // Twitter user who mentioned Gluon
-        const replyPrompt = `Generate an extremely original, sharp-witted tweet in Gluon's tone. Avoid clichés, tired jokes, or anything that feels overdone, and don't start the tweet with 'Ah,' or 'Oh,' just dive right into the content. The tweet should feel fresh, funny, maybe a little bit like existential crisis, can also be self deprecating but not always, capturing modern internet humor with brainrot phrasing. You can also use curse words if it makes sense to. It must be one sentence, with no more than 100 characters. No hashtags or emojis.. Respond to this text: "${mention.text}"`;
+        const replyPrompt = process.env.XBOT_PROMPT_RESPONSE;
 
         // Generate reply content
         const response = await openai.chat.completions.create({
