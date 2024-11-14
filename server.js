@@ -280,8 +280,6 @@ async function generatePersonalityTweet() {
   }
 }
 
-/*
-
 // Function to post a personality tweet every 2 hours at a random time within that interval
 function schedulePersonalityTweet() {
   const minInterval = 0;
@@ -332,10 +330,7 @@ function scheduleFortuneTweet() {
 }
 
 
-*/
-
-
-
+/*
 // Function to post a personality tweet every 10 seconds for testing
 function schedulePersonalityTweet() {
   const randomInterval = 100000 * 1000; // 10 seconds for personality tweets
@@ -370,9 +365,7 @@ function scheduleFortuneTweet() {
     scheduleFortuneTweet(); // Schedule the next fortune tweet
   }, randomInterval);
 }
-
-
-
+*/
 
 
 // Start the tweet schedules
