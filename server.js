@@ -422,4 +422,4 @@ function logPeriodicNote() {
 }
 
 // Set up a recurring log every 10 minutes (600,000 milliseconds)
-setInterval(logPeriodicNote, 5 * 60 * 1000); // 10 minutes
+setInterval(logPeriodicNote, 60 * 60 * 1000); // 60 minutes
