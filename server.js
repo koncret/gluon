@@ -297,8 +297,8 @@ async function generateUniqueQuarkTweet(word1, word2, word3) {
  *                        SCHEDULE QUARK TWEET                            *
  **************************************************************************/
 function scheduleFortuneTweet() {
-  const minInterval = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
-  const maxInterval = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+  const minInterval = 2 * 60 * 60 * 1000; // 4 hours in milliseconds
+  const maxInterval = 4 * 60 * 60 * 1000; // 8 hours in milliseconds
   const randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
 
   console.log(`Scheduling fortune tweet in ${(randomInterval / (60 * 60 * 1000)).toFixed(2)} hours.`);
@@ -343,7 +343,7 @@ function scheduleFortuneTweet() {
 /*
 // Function to post a fortune tweet every 30 seconds for testing
 function scheduleFortuneTweet() {
-  const randomInterval = 2 * 1000; // 10 seconds for personality tweets
+  const randomInterval = 5 * 1000; // 10 seconds for personality tweets
 
   console.log(`Scheduling fortune tweet in ${(randomInterval / 1000).toFixed(2)} seconds.`);
   
@@ -435,7 +435,7 @@ function schedulePersonalityTweet() {
 /*
 // Function to post a personality tweet every 10 seconds for testing
 function schedulePersonalityTweet() {
-  const randomInterval = 100000 * 1000; // 10 seconds for personality tweets
+  const randomInterval = 5 * 1000; // 10 seconds for personality tweets
 
   console.log(`Scheduling personality tweet in ${(randomInterval / 1000).toFixed(2)} seconds.`);
   
