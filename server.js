@@ -10,10 +10,16 @@ const app = express();
 app.use(express.json());
 app.use(express.static(__dirname));
 
+/*
 const port = process.env.PORT || 10000;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
+*/
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`)
+});
 
 // Initialize OpenAI API
 const openai = new OpenAI({
@@ -274,7 +280,7 @@ async function generateUniqueQuarkTweet(word1, word2, word3) {
         { role: "system", content: personalityPrompt },
         {
           role: "user",
-          content: `${quarkPrompt} use these words and outcome as inspiration: "${word1}", "${word2}", and "${word3}". Keep each tweet under 200 characters. Do not use hashtags, emojis, or exclamation marks.`
+          content: `${quarkPrompt} use these words and outcome as inspiration but do not quote them directly: "${word1}", "${word2}", and "${word3}". Keep each tweet under 200 characters. Do not use hashtags, emojis, or exclamation marks.`
         }
       ],
     });
