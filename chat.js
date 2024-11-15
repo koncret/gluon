@@ -35,7 +35,7 @@ openAboutButton.addEventListener("click", () => {
 openCAButton.addEventListener("click", () => {
     CAPopup.style.display = "flex";
     CAContent.innerHTML = ""; // Clear previous content
-    displayTypingEffect("Da1g8mF5g6qq1dEPMfTvWD31MRLi83s7qDvY1nmMpump", CAContent);
+    displayTypingEffect("", CAContent);
 });
 
 // Window controls for terminal and about popup
