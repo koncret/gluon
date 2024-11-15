@@ -461,57 +461,7 @@ schedulePersonalityTweet();
  *                                                                        *
  *                                                                        *
  **************************************************************************/
-// Function to check for recent mentions and occasionally reply
-async function checkForMentionsAndReplies() {
-  try {
-    // Fetch the 10 most recent mentions and replies to Gluon
-    const mentions = await twitterClient.v2.userMentionTimeline(process.env.GLUON_USER_ID, { max_results: 10 });
-
-    // Log mentions to verify tweet IDs
-    console.log("Fetched mentions:", mentions.data);
-
-    // Loop through mentions
-    for (const mention of mentions.data) {
-      // Check if `mention.id` is defined and valid
-      if (!mention.id) {
-        console.error("Invalid mention ID:", mention);
-        continue;
-      }
-
-      // 30% chance for Gluon to respond
-      const shouldReply = Math.random() < 0.3;
-      
-      if (shouldReply) {
-        const replyPrompt = process.env.XBOT_PROMPT_RESPONSE;
-
-        // Generate reply content
-        const response = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo",
-          messages: [
-            { role: "system", content: personalityPrompt },
-            { role: "user", content: replyPrompt }
-          ],
-        });
-
-        const replyContent = response.choices[0].message.content;
-
-        // Post the reply with a valid mention ID
-        try {
-          await twitterClient.v2.reply(replyContent, mention.id); // Ensure mention.id is valid here
-          console.log(`Replied to ${mention.author_id} with mention ID ${mention.id}: ${replyContent}`);
-        } catch (error) {
-          console.error("Error posting reply:", error);
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching mentions or generating reply:", error);
-  }
-}
-
-// Set up a recurring check for mentions every hour
-setInterval(checkForMentionsAndReplies, 60 * 60 * 1000); // 1 hour in milliseconds
-
+/* Will add later */
 
 
 /**************************************************************************
