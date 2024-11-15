@@ -119,6 +119,7 @@
         }
         
         #chat-container,
+        #CA-popup,
         #about-popup {
             position: absolute;
             background-color: #0d0221;
@@ -137,11 +138,16 @@
             height: 500px;
         }
         
+        #CA-popup {
+            width: 405px;
+            height: 200px;
+        }
         #about-popup {
             width: 400px;
             height: 400px;
         }
         
+        #CA-popup.adjust-maximize,
         #about-popup.adjust-maximize,
         #chat-container.adjust-maximize {
             width: calc(100% - 20px);
@@ -151,6 +157,7 @@
             margin: 10px;
         }
         
+        #CA-popup.adjust-minimize,
         #about-popup.adjust-minimize,
         #chat-container.adjust-minimize {
             height: 46px;
@@ -161,6 +168,11 @@
             left: 5%;
         }
         
+        #CA-popup {
+            display: none;
+            top: 15%;
+            left: 10%;
+        }
         #about-popup {
             display: none;
             top: 15%;
@@ -168,6 +180,7 @@
         }
         
         #header,
+        #CA-header,
         #about-header {
             background-color: #210a45;
             color: #ffcbf2;
@@ -183,6 +196,7 @@
         }
         
         #messages,
+        #CA-content,
         #about-content {
             padding: 15px;
             overflow-y: auto;
@@ -192,6 +206,7 @@
             box-sizing: border-box;
         }
         
+        #CA-content,
         #about-content {
             white-space: pre-line;
         }
@@ -223,17 +238,23 @@
             opacity: .5;
         }
         
+        .message {
+            text-wrap: wrap;
+        }
+        
         @media (max-width: 900px) {
-            #chat-container,
-            #about-popup {}
             #chat-container {
                 width: 400px;
                 max-width: 90%;
+            }
+            #CA-popup {
+                
             }
             #about-popup {
                 width: 300px;
                 max-width: 90%;
             }
+            #CA-popup.adjust-maximize,
             #about-popup.adjust-maximize,
             #chat-container.adjust-maximize {
                 max-width: 100%;
@@ -251,7 +272,10 @@
     <!-- Header Links -->
     <div id="header-links">
         <button id="open-terminal">Open Terminal</button>
-        <button id="open-about">About Gluon</button> <a class="x-link" href="https://x.com/g_l_uon" target="_blank"><span><img src="logos/logo.svg"/></span>Fortunes</a> </div>
+        <button id="open-about">About Gluon</button>
+        <button id="open-CA">CA</button>
+        <a class="x-link" href="https://x.com/g_l_uon" target="_blank"><span><img src="logos/logo.svg"/></span>Fortunes</a> 
+    </div>
     <!-- Chat Terminal -->
     <div id="chat-container">
         <div id="header">
@@ -282,6 +306,21 @@
             </div>
         </div>
         <div id="about-content"></div>
+    </div>
+    <!-- About Gluon Popup -->
+    <div id="CA-popup">
+        <div id="CA-header">
+            <div class="button minimize">
+                <div></div>
+            </div>
+            <div class="button maximize">
+                <div></div>
+            </div>
+            <div class="button close">
+                <div>x</div>
+            </div>
+        </div>
+        <div id="CA-content"></div>
     </div>
     <script src="chat.js"></script>
 </body>
