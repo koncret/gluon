@@ -4,7 +4,7 @@ const OpenAI = require('openai');
 const path = require('path');
 const fs = require('fs');
 const TwitterApi = require('twitter-api-v2').default;
-
+const axios = require('axios');
 
 const app = express();
 app.use(express.json());
@@ -190,8 +190,22 @@ const twitterClient = new TwitterApi({
   accessSecret: process.env.TWITTER_ACCESS_SECRET,
 });
 
-console.log("Bot initialized and starting...");
 
+
+
+
+/**************************************************************************
+ *                                                                        *
+ *                                                                        *
+ *                        FORTUNE/QUARK TWEETS                            *
+ *                                                                        *
+ *                                                                        *
+ **************************************************************************/
+
+
+/**************************************************************************
+ *                              GET IMAGE                                 *
+ **************************************************************************/
 // Base URL where images are hosted and starting image index
 const imageBaseUrl = 'https://g1u0n10.github.io/Gluon-Images/imgs';
 let currentImageIndex = 1;
@@ -199,23 +213,17 @@ let currentImageIndex = 1;
 // Function to get the next image URL in sequence
 function getNextImagePath() {
   const imageUrl = `${imageBaseUrl}/${currentImageIndex}.jpg`;
-
-  // Log the URL for debugging
-  console.log(`Fetching image: ${imageUrl}`);
-
-  // Increment index to use the next image in the sequence
   currentImageIndex += 1;
-
   return imageUrl;
 }
 
 
-// Personality prompt and base tweet prompt
-const personalityPrompt = process.env.XBOT_SYSTEM_MESSAGE_CONTENT
-
+/**************************************************************************
+ *                              GET QUARK                                 *
+ **************************************************************************/
 // Function to generate the quark-specific prompt
 function quarkPromptTemplate(quarkName) {
-  return process.env.XBOT_PROMPT.replace("${quarkName}", quarkName);
+  return process.env.XBOT_PROMPT_FORTUNE.replace("${quarkName}", quarkName);
 }
 
 // Array of all Quarks
@@ -232,8 +240,26 @@ function shuffle(array) {
 // Track index of the next Quark to tweet about
 let quarkIndex = 0;
 
-// Function to ensure all Quarks are covered randomly before reshuffling
-async function generateUniqueQuarkTweet() {
+
+/**************************************************************************
+ *                         RANDOM WORD LISTS                              *
+ **************************************************************************/
+const wordList1 = JSON.parse(process.env.WORDS1);
+const wordList2 = JSON.parse(process.env.WORDS2);
+const wordList3 = JSON.parse(process.env.WORDS3);
+
+// Function to select a random word from each list
+function getRandomWords() {
+  const word1 = wordList1[Math.floor(Math.random() * wordList1.length)];
+  const word2 = wordList2[Math.floor(Math.random() * wordList2.length)];
+  const word3 = wordList3[Math.floor(Math.random() * wordList3.length)];
+  return { word1, word2, word3 };
+}
+
+/**************************************************************************
+ *                        GENERATE QUARK TWEET                            *
+ **************************************************************************/
+async function generateUniqueQuarkTweet(word1, word2, word3) {
   if (quarkIndex === 0) shuffle(quarksXbot);
 
   const selectedQuark = quarksXbot[quarkIndex];
@@ -246,19 +272,105 @@ async function generateUniqueQuarkTweet() {
       model: "gpt-3.5-turbo",
       messages: [
         { role: "system", content: personalityPrompt },
-        { role: "user", content: quarkPrompt }
+        {
+          role: "user",
+          content: `${quarkPrompt} use these words and outcome as inspiration: "${word1}", "${word2}", and "${word3}". Keep each tweet under 200 characters. Do not use hashtags, emojis, or exclamation marks.`
+        }
       ],
     });
 
     let tweetContent = response.choices[0].message.content;
-
-    // console.log(`Generated fortune tweet content for ${selectedQuark}: ${tweetContent}`);
     return `${selectedQuark}: ${tweetContent}`;
   } catch (error) {
     console.error("Error generating tweet:", error);
     return null;
   }
 }
+
+/**************************************************************************
+ *                        SCHEDULE QUARK TWEET                            *
+ **************************************************************************/
+function scheduleFortuneTweet() {
+  const minInterval = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+  const maxInterval = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+  const randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
+
+  console.log(`Scheduling fortune tweet in ${(randomInterval / (60 * 60 * 1000)).toFixed(2)} hours.`);
+  
+  setTimeout(async () => {
+    const { word1, word2, word3 } = getRandomWords();
+    const tweetContent = await generateUniqueQuarkTweet(word1, word2, word3);
+
+    if (tweetContent) {
+      const imageUrl = getNextImagePath();
+
+      try {
+        // Fetch the image from the URL
+        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        const imageBuffer = Buffer.from(response.data, 'binary');
+
+        // Upload image to Twitter
+        const mediaId = await twitterClient.v1.uploadMedia(imageBuffer, { mimeType: 'image/jpeg' });
+        await twitterClient.v2.tweet({
+          text: tweetContent,
+          media: { media_ids: [mediaId] },
+        });
+        console.log("Fortune tweet posted with", tweetContent, "Image URL:", imageUrl);
+      } catch (error) {
+        if (error.code === 429) {
+          console.error("Rate limit reached. Backing off and rescheduling.");
+          // If rate-limited, wait 15 minutes (900,000 milliseconds) before retrying
+          setTimeout(scheduleFortuneTweet, 15 * 60 * 1000);
+          return;
+        } else {
+          console.error("Error posting fortune tweet with image:", error);
+        }
+      }
+    }
+    scheduleFortuneTweet(); // Schedule the next fortune tweet
+  }, randomInterval);
+}
+
+/**************************************************************************
+ *               FUNCTION USED TO TEST IN TERMINAL ONLY                   *
+ **************************************************************************/
+/*
+// Function to post a fortune tweet every 30 seconds for testing
+function scheduleFortuneTweet() {
+  const randomInterval = 2 * 1000; // 10 seconds for personality tweets
+
+  console.log(`Scheduling fortune tweet in ${(randomInterval / 1000).toFixed(2)} seconds.`);
+  
+  setTimeout(async () => {
+    const { word1, word2, word3 } = getRandomWords();
+    const tweetContent = await generateUniqueQuarkTweet(word1, word2, word3);
+    if (tweetContent) {
+      const imagePath = getNextImagePath();
+      
+      // Log the fortune tweet content and image path to the console instead of tweeting
+      console.log("Fortune tweet posted with", tweetContent, "Image:", imagePath);
+    }
+    scheduleFortuneTweet(); // Schedule the next fortune tweet
+  }, randomInterval);
+}
+*/
+// Start the tweet schedules
+scheduleFortuneTweet();
+
+
+/**************************************************************************
+ *                                                                        *
+ *                                                                        *
+ *                           RANDOM TWEETS                                *
+ *                                                                        *
+ *                                                                        *
+ **************************************************************************/
+
+/**************************************************************************
+ *                           GENERATE TWEET                               *
+ **************************************************************************/
+// Personality prompt and base tweet prompt
+const personalityPrompt = process.env.XBOT_SYSTEM_MESSAGE_CONTENT
 
 // Function to generate a personality-based tweet without an image
 async function generatePersonalityTweet() {
@@ -272,7 +384,6 @@ async function generatePersonalityTweet() {
         { role: "user", content: generalPrompt }
       ],
     });
-    // console.log(`Generated personality tweet: ${response.choices[0].message.content.trim()}`);
     return response.choices[0].message.content.trim();
   } catch (error) {
     console.error("Error generating personality tweet:", error);
@@ -280,10 +391,13 @@ async function generatePersonalityTweet() {
   }
 }
 
-// Function to post a personality tweet every 2 hours at a random time within that interval
+/**************************************************************************
+ *                           SCHEDULE TWEET                               *
+ **************************************************************************/
+// Function to post a personality tweet every 1-3 hours at a random time within that interval
 function schedulePersonalityTweet() {
-  const minInterval = 0;
-  const maxInterval = 2 * 60 * 60 * 1000;
+  const minInterval = 1 * 60 * 60 * 1000; // 1 hours in milliseconds
+  const maxInterval = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
   const randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
 
   console.log(`Scheduling personality tweet in ${(randomInterval / (60 * 60 * 1000)).toFixed(2)} hours.`);
@@ -295,41 +409,23 @@ function schedulePersonalityTweet() {
         await twitterClient.v2.tweet({ text: tweetContent });
         console.log("Personality tweet posted:", tweetContent);
       } catch (error) {
-        console.error("Error posting personality tweet:", error);
+        if (error.code === 429) {
+          console.error("Rate limit reached. Backing off and rescheduling.");
+          // If rate-limited, wait 15 minutes (900,000 milliseconds) before retrying
+          setTimeout(schedulePersonalityTweet, 15 * 60 * 1000);
+          return;
+        } else {
+          console.error("Error posting personality tweet:", error);
+        }
       }
     }
     schedulePersonalityTweet(); // Schedule the next personality tweet
   }, randomInterval);
 }
 
-// Function to post a fortune tweet every 4-8 hours at a random time within that interval
-function scheduleFortuneTweet() {
-  const minInterval = 2 * 60 * 60 * 1000;
-  const maxInterval = 5 * 60 * 60 * 1000;
-  const randomInterval = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
-
-  console.log(`Scheduling fortune tweet in ${(randomInterval / (60 * 60 * 1000)).toFixed(2)} hours.`);
-  
-  setTimeout(async () => {
-    const tweetContent = await generateUniqueQuarkTweet();
-    if (tweetContent) {
-      const imagePath = getNextImagePath();
-      try {
-        const mediaId = await twitterClient.v1.uploadMedia(imagePath);
-        await twitterClient.v2.tweet({
-          text: tweetContent,
-          media: { media_ids: [mediaId] },
-        });
-        console.log("Fortune tweet posted with image:", tweetContent);
-      } catch (error) {
-        console.error("Error posting fortune tweet with image:", error);
-      }
-    }
-    scheduleFortuneTweet(); // Schedule the next fortune tweet
-  }, randomInterval);
-}
-
-
+/**************************************************************************
+ *               FUNCTION USED TO TEST IN TERMINAL ONLY                   *
+ **************************************************************************/
 /*
 // Function to post a personality tweet every 10 seconds for testing
 function schedulePersonalityTweet() {
@@ -346,46 +442,40 @@ function schedulePersonalityTweet() {
     schedulePersonalityTweet(); // Schedule the next personality tweet
   }, randomInterval);
 }
-
-// Function to post a fortune tweet every 30 seconds for testing
-function scheduleFortuneTweet() {
-  const randomInterval = 2 * 1000; // 10 seconds for personality tweets
-
-  console.log(`Scheduling fortune tweet in ${(randomInterval / 1000).toFixed(2)} seconds.`);
-  
-  setTimeout(async () => {
-    const tweetContent = await generateUniqueQuarkTweet();
-    if (tweetContent) {
-      const imagePath = getNextImagePath();
-      
-      // Log the fortune tweet content and image path to the console instead of tweeting
-      console.log("Generated fortune tweet with image:", tweetContent);
-      console.log("Image path:", imagePath);
-    }
-    scheduleFortuneTweet(); // Schedule the next fortune tweet
-  }, randomInterval);
-}
 */
-
-
 // Start the tweet schedules
 schedulePersonalityTweet();
-scheduleFortuneTweet();
-console.log("Tweet schedules have been set up.");
 
+
+
+/**************************************************************************
+ *                                                                        *
+ *                                                                        *
+ *                            REPLY TWEETS                                *
+ *                                                                        *
+ *                                                                        *
+ **************************************************************************/
 // Function to check for recent mentions and occasionally reply
 async function checkForMentionsAndReplies() {
   try {
     // Fetch the 10 most recent mentions and replies to Gluon
     const mentions = await twitterClient.v2.userMentionTimeline(process.env.GLUON_USER_ID, { max_results: 10 });
 
+    // Log mentions to verify tweet IDs
+    console.log("Fetched mentions:", mentions.data);
+
     // Loop through mentions
     for (const mention of mentions.data) {
+      // Check if `mention.id` is defined and valid
+      if (!mention.id) {
+        console.error("Invalid mention ID:", mention);
+        continue;
+      }
+
       // 30% chance for Gluon to respond
       const shouldReply = Math.random() < 0.3;
       
       if (shouldReply) {
-        const userName = mention.author_id; // Twitter user who mentioned Gluon
         const replyPrompt = process.env.XBOT_PROMPT_RESPONSE;
 
         // Generate reply content
@@ -399,10 +489,10 @@ async function checkForMentionsAndReplies() {
 
         const replyContent = response.choices[0].message.content;
 
-        // Post the reply
+        // Post the reply with a valid mention ID
         try {
-          await twitterClient.v2.reply(replyContent, mention.id);
-          console.log(`Replied to ${userName}: ${replyContent}`);
+          await twitterClient.v2.reply(replyContent, mention.id); // Ensure mention.id is valid here
+          console.log(`Replied to ${mention.author_id} with mention ID ${mention.id}: ${replyContent}`);
         } catch (error) {
           console.error("Error posting reply:", error);
         }
@@ -416,10 +506,18 @@ async function checkForMentionsAndReplies() {
 // Set up a recurring check for mentions every hour
 setInterval(checkForMentionsAndReplies, 60 * 60 * 1000); // 1 hour in milliseconds
 
+
+
+/**************************************************************************
+ *                                                                        *
+ *                                                                        *
+ *                     MAKE SURE CODE IS RUNNING                          *
+ *                                                                        *
+ *                                                                        *
+ **************************************************************************/
 // Function to log a custom note to the terminal every 10 minutes
 function logPeriodicNote() {
   console.log("Note: Gluon is monitoring tweets and mentions...");
 }
-
 // Set up a recurring log every 10 minutes (600,000 milliseconds)
 setInterval(logPeriodicNote, 60 * 60 * 1000); // 60 minutes
