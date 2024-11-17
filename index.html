@@ -242,16 +242,22 @@
         }
         
         .input-cont {
-            margin-top: auto;
             display: flex;
         }
         
+        .answer-buttons {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+        }
+        
         .answer-button {
-            width: 80px;
+            width: calc(50% + 0px);
             color: #fdfdff;
             background-color: #ac73ff;
-            padding: 11px;
-            font-size: 14px;
+            padding: 7px;
+            font-size: 11px;
+            letter-spacing: 1px;
             cursor: pointer;
             text-decoration: none;
             font-family: 'Courier New', Courier, monospace;
@@ -259,11 +265,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 3px solid #6800ff;
+            border: none;
+            margin: 3px;
+        }
+        
+        #yes-button {
+            margin: 3px 1.5px 3px 3px;
         }
         
         #no-button {
-            margin: 0 0 0 -3px;
+            margin: 3px 3px 3px 1.5px;
+        }
+        
+        #enter-button {
+            width: 120px;
+            padding: 11px;
+            font-size: 12px;
+            margin: 0;
         }
         
         #user-input {
@@ -311,13 +329,12 @@
             #chat-container {
                 max-width: 100%;
                 width: 100%;
-                height: calc(100% - 75px);
-                top: 0 !important;
+                height: unset;
+                top: 70px !important;
                 left: 0 !important;
-                margin: 75px 0 0 0;
-            }
-            #user-input {
-                height: 50px;
+                right: 0 !important;
+                bottom: 0 !important;
+                margin: 0;
             }
         }
     </style>
@@ -345,10 +362,13 @@
         <div id="messages">
             <button id="find-quark-button">Find My Quark</button>
         </div>
+        <div class="answer-buttons">
+            <button class="answer-button" id="yes-button">YES</button>
+            <button class="answer-button" id="no-button">NO</button>
+        </div>
         <div class="input-cont">
             <input type="text" id="user-input" placeholder="Type a message..." />
-            <div class="answer-button" id="yes-button">YES</div>
-            <div class="answer-button" id="no-button">NO</div>
+            <button class="answer-button" id="enter-button">Send</button>
         </div>
     </div>
     <!-- About Gluon Popup -->

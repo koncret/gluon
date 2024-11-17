@@ -174,6 +174,11 @@ noButton.addEventListener("click", () => {
     sendMessage(); // Automatically send the message
 });
 
+const enterButton = document.getElementById("enter-button");
+enterButton.addEventListener("click", () => {
+    sendMessage(); // Send the message typed in the input field
+});
+
 
 
 // Dragging functionality for both chat and about popup
