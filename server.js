@@ -44,9 +44,7 @@ app.get('/api/greet', async (req, res) => {
             messages: [
                 {
                     role: "system",
-                    content: "Generate a message that includes: " +
-                             "'The path of every particle was chosen at the dawn of the universe, this includes the ones that form you.'" +
-                             "Vary this line slightly, then say exactly this 'To find out your assigned Quark click the 'Find My Quark' button above'."
+                    content: "Say: 'To find out your assigned Quark click the 'Find My Quark' button above.'"
                 }
             ],
             temperature: 0.7
@@ -59,9 +57,7 @@ app.get('/api/greet', async (req, res) => {
         console.error("Error generating greeting:", error);
         // Fallback message in case of error
         return res.json({
-            reply: "The path of every particle was chosen at the dawn of the universe, this includes the ones that form you.\n" +
-                   "The path of every particle was chosen at the dawn of the universe, this includes the ones that form you.\n" +
-                   "To find out your assigned Quark type 'I want to know my Quark'."
+            reply: "Say: 'To find out your assigned Quark click the 'Find My Quark' button above.'"
         });
     }
 });

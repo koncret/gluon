@@ -25,7 +25,8 @@ openTerminalButton.addEventListener("click", () => {
 openAboutButton.addEventListener("click", () => {
     aboutPopup.style.display = "flex";
     aboutContent.innerHTML = ""; // Clear previous content
-    displayTypingEffect("You can use Gluon terminal to find your Quark by typing 'I want to know my Quark'.\n\n" +
+    displayTypingEffect("The path of every particle was chosen at the dawn of the universe, this includes the ones that form you...\n\n" +
+                        "You can use Gluon terminal to find your Quark by typing 'I want to know my Quark'.\n\n" +
                         "Once you know, you can ask Gluon questions about your Quark, or others, or talk to Gluon about whatever you'd like.\n\n" +
                         "When important information arises about a Quark group Gluon will share that information on X.\n\n" +
                         "You can follow Gluon on X to ensure you never miss a fortune: @g_l_uon", aboutContent);
