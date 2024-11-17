@@ -186,16 +186,3 @@ function makeDraggable(headerSelector, container) {
 makeDraggable("#header", chatContainer);
 makeDraggable("#about-header", aboutPopup);
 // makeDraggable("#CA-header", CAPopup);
-const headerLinks = document.getElementById("header-links");
-// Add focus event listener
-userInput.addEventListener("focus", () => {
-    // Change styling when the input is active
-    chatContainer.classList.add("input-active-chat-cont");
-    headerLinks.classList.add("input-active-header");
-});
-// Add blur event listener
-userInput.addEventListener("blur", () => {
-    // Revert styling when the input is inactive
-    chatContainer.classList.remove("input-active-chat-cont");
-    headerLinks.classList.remove("input-active-header");
-});
