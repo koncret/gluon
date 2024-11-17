@@ -8,11 +8,10 @@
     <title>Gluon</title>
     <style>
         html {
-            height: 100vh;
             margin: 0;
             font-family: 'Courier New', Courier, monospace;
             background-image: url('imgs/guide.jpg');
-            background-position: center;
+            background-position: top;
             background-size: cover;
             display: flex;
             align-items: center;
@@ -22,7 +21,6 @@
         
         body {
             width: 100vw;
-            height: 100vh;
             margin: 0;
             display: flex;
             align-items: flex-start;
@@ -350,26 +348,24 @@
                 position: fixed;
                 max-width: 100%;
                 width: 100%;
-                height: unset;
+                height: calc(100vh - 65px);
                 top: 65px;
                 left: 0;
                 right: 0;
-                bottom: 0;
                 margin: 0;
             }
             .input-cont {
                 height: 50px;
+                min-height: 50px;
             }
-            #user-input {
-            }
+            #user-input {}
             .answer-button {
                 padding: 15px;
             }
             .input-active-chat-cont {
-                top: 465px !important;
+                height: calc(100vh - 365px) !important;
             }
             .input-active-header {
-                top: 400px !important;
             }
         }
     </style>
@@ -402,7 +398,7 @@
             <button class="answer-button" id="no-button">NO</button>
         </div>
         <div class="input-cont">
-            <input type="text" id="user-input" placeholder="Type a message..."/>
+            <input type="text" id="user-input" placeholder="Type a message..." />
             <button class="answer-button" id="enter-button">Send</button>
         </div>
     </div>
