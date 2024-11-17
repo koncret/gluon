@@ -25,7 +25,7 @@ openTerminalButton.addEventListener("click", () => {
 openAboutButton.addEventListener("click", () => {
     aboutPopup.style.display = "flex";
     aboutContent.innerHTML = ""; // Clear previous content
-    displayTypingEffect("You can use Gluon terminal to find your Quark by saying 'I want to know my Quark'.\n\n" +
+    displayTypingEffect("You can use Gluon terminal to find your Quark by typing 'I want to know my Quark'.\n\n" +
                         "Once you know, you can ask Gluon questions about your Quark, or others, or talk to Gluon about whatever you'd like.\n\n" +
                         "When important information arises about a Quark group Gluon will share that information on X.\n\n" +
                         "You can follow Gluon on X to ensure you never miss a fortune: @g_l_uon", aboutContent);
@@ -151,6 +151,29 @@ function displayTypingEffect(text, container, speed = 25) {
     }
     typeCharacter();
 }
+
+const findQuarkButton = document.getElementById("find-quark-button");
+findQuarkButton.addEventListener("click", () => {
+    const quarkMessage = "I want to know my Quark";
+    userInput.value = quarkMessage; // Set the message in the input field
+    sendMessage(); // Automatically send the message
+});
+
+const yesButton = document.getElementById("yes-button");
+yesButton.addEventListener("click", () => {
+    const quarkMessage = "yes";
+    userInput.value = quarkMessage; // Set the message in the input field
+    sendMessage(); // Automatically send the message
+});
+
+const noButton = document.getElementById("no-button");
+noButton.addEventListener("click", () => {
+    const quarkMessage = "no";
+    userInput.value = quarkMessage; // Set the message in the input field
+    sendMessage(); // Automatically send the message
+});
+
+
 
 // Dragging functionality for both chat and about popup
 function makeDraggable(headerSelector, container) {

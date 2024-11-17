@@ -118,6 +118,24 @@
             margin-bottom: 2px;
         }
         
+        #find-quark-button {
+            color: #fdfdff;
+            background-color: #ac73ff;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            border: 2px solid #6800ff;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0 0 20px auto;
+            cursor: pointer;
+        }
+        
+        #find-quark-button:hover {
+            color: #000;
+            border: 2px solid #1f1333;
+        }
+        
         #chat-container,
         #CA-popup,
         #about-popup {
@@ -200,6 +218,8 @@
         #messages,
         #CA-content,
         #about-content {
+            display: flex;
+            flex-direction: column;
             padding: 15px;
             overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
@@ -221,6 +241,31 @@
             color: #8bb3ff;
         }
         
+        .input-cont {
+            margin-top: auto;
+            display: flex;
+        }
+        
+        .answer-button {
+            width: 80px;
+            color: #fdfdff;
+            background-color: #ac73ff;
+            padding: 11px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: 'Courier New', Courier, monospace;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #6800ff;
+        }
+        
+        #no-button {
+            margin: 0 0 0 -3px;
+        }
+        
         #user-input {
             padding: 10px;
             background-color: #4d1d78;
@@ -232,7 +277,6 @@
             box-sizing: border-box;
             border: none;
             border-top: 2px solid #ac73ff;
-            margin-top: auto;
         }
         
         #user-input::placeholder {
@@ -298,8 +342,15 @@
                 <div>x</div>
             </div>
         </div>
-        <div id="messages"></div>
-        <input type="text" id="user-input" placeholder="Type a message..." /> </div>
+        <div id="messages">
+            <button id="find-quark-button">Find My Quark</button>
+        </div>
+        <div class="input-cont">
+            <input type="text" id="user-input" placeholder="Type a message..." />
+            <div class="answer-button" id="yes-button">YES</div>
+            <div class="answer-button" id="no-button">NO</div>
+        </div>
+    </div>
     <!-- About Gluon Popup -->
     <div id="about-popup">
         <div id="about-header">

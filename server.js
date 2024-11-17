@@ -46,7 +46,7 @@ app.get('/api/greet', async (req, res) => {
                     role: "system",
                     content: "Generate a message that includes: " +
                              "'The path of every particle was chosen at the dawn of the universe, this includes the ones that form you.'" +
-                             "Vary this line slightly, then say exactly this 'To find out your assigned Quark type 'I want to know my Quark''."
+                             "Vary this line slightly, then say exactly this 'To find out your assigned Quark click the 'Find My Quark' button above'."
                 }
             ],
             temperature: 0.7
