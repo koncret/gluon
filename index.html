@@ -322,7 +322,9 @@
             }
             #header-links button,
             #header-links a,
-            #find-quark-button {}
+            #find-quark-button {
+                padding: 8px;
+            }
             #chat-container {
                 width: 400px;
                 max-width: 90%;
@@ -357,7 +359,6 @@
                 height: 50px;
             }
             #user-input {
-                font-size: 16px;
             }
             .answer-button {
                 padding: 15px;
@@ -393,7 +394,7 @@
             <button class="answer-button" id="no-button">NO</button>
         </div>
         <div class="input-cont">
-            <textarea type="text" id="user-input" placeholder="Type a message..."></textarea>
+            <input type="text" id="user-input" placeholder="Type a message..."/>
             <button class="answer-button" id="enter-button">Send</button>
         </div>
     </div>
