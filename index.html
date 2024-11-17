@@ -3,17 +3,19 @@
 
 <head>
     <script>
-        // prevent scrolling from outside of input field
-        $(document).on('touchstart', function (e) {
-            if (e.target.nodeName !== 'INPUT') {
-                e.preventDefault();
-            }
-        });
-        // prevent scrolling from within input field
-        $(document).on('touchmove', function (e) {
-            if (e.target.nodeName == 'INPUT') {
-                e.preventDefault();
-            }
+        document.addEventListener("DOMContentLoaded", () => {
+            // prevent scrolling from outside of input field
+            $(document).on('touchstart', function (e) {
+                if (e.target.nodeName !== 'INPUT') {
+                    e.preventDefault();
+                }
+            });
+            // prevent scrolling from within input field
+            $(document).on('touchmove', function (e) {
+                if (e.target.nodeName == 'INPUT') {
+                    e.preventDefault();
+                }
+            });
         });
     </script>
     <meta charset="UTF-8">

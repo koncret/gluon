@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     fetch('/api/greet').then(response => response.json()).then(data => displayTypingEffect(data.reply, messagesContainer)) // Pass messagesContainer explicitly
         .catch(error => console.error("Error fetching greeting:", error));
+    document.body.addEventListener('touchstart', function(e){ e.preventDefault(); });
 });
 const userInput = document.getElementById("user-input");
 const messagesContainer = document.getElementById("messages");
