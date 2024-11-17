@@ -12,6 +12,9 @@ const openTerminalButton = document.getElementById("open-terminal");
 const openAboutButton = document.getElementById("open-about");
 const aboutPopup = document.getElementById("about-popup");
 const aboutContent = document.getElementById("about-content");
+// const openCAButton = document.getElementById("open-CA");
+// const CAPopup = document.getElementById("CA-popup");
+// const CAContent = document.getElementById("CA-content");
 
 // Open terminal button
 openTerminalButton.addEventListener("click", () => {
@@ -27,6 +30,15 @@ openAboutButton.addEventListener("click", () => {
                         "When important information arises about a Quark group Gluon will share that information on X.\n\n" +
                         "You can follow Gluon on X to ensure you never miss a fortune: @g_l_uon", aboutContent);
 });
+
+/*
+// CA Gluon Popup
+openCAButton.addEventListener("click", () => {
+    CAPopup.style.display = "flex";
+    CAContent.innerHTML = ""; // Clear previous content
+    displayTypingEffect("Not yet.", CAContent);
+});
+*/
 
 // Window controls for terminal and about popup
 document.querySelectorAll(".minimize").forEach(btn => {
@@ -167,3 +179,4 @@ function makeDraggable(headerSelector, container) {
 // Apply draggable functionality
 makeDraggable("#header", chatContainer);
 makeDraggable("#about-header", aboutPopup);
+// makeDraggable("#CA-header", CAPopup);

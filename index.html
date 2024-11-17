@@ -92,7 +92,7 @@
             border: 2px solid #6800ff;
             background-color: #ac73ff;
         }
-
+        
         .button:hover {
             border-color: #000;
         }
@@ -142,6 +142,7 @@
             width: 405px;
             height: 200px;
         }
+        
         #about-popup {
             width: 400px;
             height: 400px;
@@ -173,6 +174,7 @@
             top: 15%;
             left: 10%;
         }
+        
         #about-popup {
             display: none;
             top: 15%;
@@ -247,22 +249,31 @@
                 width: 400px;
                 max-width: 90%;
             }
-            #CA-popup {
-                
-            }
+            #CA-popup {}
             #about-popup {
                 width: 300px;
                 max-width: 90%;
             }
             #CA-popup.adjust-maximize,
-            #about-popup.adjust-maximize,
-            #chat-container.adjust-maximize {
+            #about-popup.adjust-maximize {
                 max-width: 100%;
                 width: calc(100% - 20px);
                 height: calc(100% - 100px);
                 top: 0 !important;
                 left: 0 !important;
                 margin: 60px 10px 10px 10px;
+            }
+            #chat-container.adjust-maximize,
+            #chat-container {
+                max-width: 100%;
+                width: 100%;
+                height: calc(100% - 75px);
+                top: 0 !important;
+                left: 0 !important;
+                margin: 75px 0 0 0;
+            }
+            #user-input {
+                height: 50px;
             }
         }
     </style>
@@ -273,8 +284,7 @@
     <div id="header-links">
         <button id="open-terminal">Open Terminal</button>
         <button id="open-about">About Gluon</button>
-        <a class="x-link" href="https://x.com/g_l_uon" target="_blank"><span><img src="logos/logo.svg"/></span>Fortunes</a> 
-    </div>
+        <!--<button id="open-CA">CA</button>--><a class="x-link" href="https://x.com/g_l_uon" target="_blank"><span><img src="logos/logo.svg"/></span>Fortunes</a> </div>
     <!-- Chat Terminal -->
     <div id="chat-container">
         <div id="header">
@@ -289,8 +299,7 @@
             </div>
         </div>
         <div id="messages"></div>
-        <input type="text" id="user-input" placeholder="Type a message..." /> 
-    </div>
+        <input type="text" id="user-input" placeholder="Type a message..." /> </div>
     <!-- About Gluon Popup -->
     <div id="about-popup">
         <div id="about-header">
@@ -306,6 +315,22 @@
         </div>
         <div id="about-content"></div>
     </div>
+    <!--
+    <div id="CA-popup">
+        <div id="CA-header">
+            <div class="button minimize">
+                <div></div>
+            </div>
+            <div class="button maximize">
+                <div></div>
+            </div>
+            <div class="button close">
+                <div>x</div>
+            </div>
+        </div>
+        <div id="CA-content"></div>
+    </div>
+    -->
     <script src="chat.js"></script>
 </body>
 
