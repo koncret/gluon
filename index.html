@@ -337,14 +337,21 @@
             }
             #chat-container.adjust-maximize,
             #chat-container {
+                position: fixed;
                 max-width: 100%;
                 width: 100%;
-                height: unset;
-                top: 80px !important;
+                height: calc(100% - 65px);
+                top: unset !important;
                 left: 0 !important;
                 right: 0 !important;
-                bottom: 40% !important;
-                margin: 0;
+                bottom: 0 !important;
+                margin-top: 0;
+            }
+            #user-input {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 3px;
             }
         }
     </style>
