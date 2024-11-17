@@ -2,6 +2,20 @@
 <html lang="en">
 
 <head>
+    <script>
+        // prevent scrolling from outside of input field
+        $(document).on('touchstart', function (e) {
+            if (e.target.nodeName !== 'INPUT') {
+                e.preventDefault();
+            }
+        });
+        // prevent scrolling from within input field
+        $(document).on('touchmove', function (e) {
+            if (e.target.nodeName == 'INPUT') {
+                e.preventDefault();
+            }
+        });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" type="image/png" href="logos/favicon.png">
@@ -364,8 +378,7 @@
             .input-active-chat-cont {
                 top: 265px !important;
             }
-            .input-active-header {
-            }
+            .input-active-header {}
         }
     </style>
 </head>
