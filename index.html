@@ -17,6 +17,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
         
         body {
@@ -28,6 +29,7 @@
             justify-content: center;
             margin: 0;
             color: #e0d7ff;
+            overflow: hidden;
         }
         
         textarea {
@@ -175,8 +177,8 @@
         #chat-container.adjust-maximize {
             width: calc(100% - 20px);
             height: calc(100% - 20px);
-            top: 0 !important;
-            left: 0 !important;
+            top: 0;
+            left: 0;
             margin: 10px;
         }
         
@@ -304,7 +306,7 @@
             box-sizing: border-box;
             border: none;
             border-top: 2px solid #ac73ff;
-            border-radius: 0 !important;
+            border-radius: 0;
         }
         
         #user-input::placeholder {
@@ -339,8 +341,8 @@
                 max-width: 100%;
                 width: calc(100% - 20px);
                 height: calc(100% - 100px);
-                top: 0 !important;
-                left: 0 !important;
+                top: 0;
+                left: 0;
                 margin: 60px 10px 10px 10px;
             }
             #chat-container.adjust-maximize,
@@ -349,11 +351,11 @@
                 max-width: 100%;
                 width: 100%;
                 height: unset;
-                top: 65px !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: 0 !important;
-                margin-top: 0;
+                top: 65px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: 0;
             }
             .input-cont {
                 height: 50px;
@@ -362,6 +364,12 @@
             }
             .answer-button {
                 padding: 15px;
+            }
+            .input-active-chat-cont {
+                top: 465px !important;
+            }
+            .input-active-header {
+                top: 400px !important;
             }
         }
     </style>
