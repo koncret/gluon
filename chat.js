@@ -179,7 +179,11 @@ enterButton.addEventListener("click", () => {
     sendMessage(); // Send the message typed in the input field
 });
 
-
+userInput.addEventListener("focus", () => {
+    setTimeout(() => {
+        userInput.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300); // Delay ensures this happens after the keyboard opens
+});
 
 // Dragging functionality for both chat and about popup
 function makeDraggable(headerSelector, container) {
