@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="icon" type="image/png" href="logos/favicon.png">
     <title>Gluon</title>
     <style>
@@ -28,6 +28,10 @@
             justify-content: center;
             margin: 0;
             color: #e0d7ff;
+        }
+        
+        textarea {
+            font-size: 16px;
         }
         
         #header-links {
@@ -318,9 +322,7 @@
             }
             #header-links button,
             #header-links a,
-            #find-quark-button {
-                font-size: 12px;
-            }
+            #find-quark-button {}
             #chat-container {
                 width: 400px;
                 max-width: 90%;
@@ -354,7 +356,12 @@
             .input-cont {
                 height: 50px;
             }
-            #user-input {}
+            #user-input {
+                font-size: 16px;
+            }
+            .answer-button {
+                padding: 15px;
+            }
         }
     </style>
 </head>
